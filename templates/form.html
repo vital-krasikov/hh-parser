@@ -14,7 +14,7 @@
 
 
 
-<link href="bootstrap.min.css" rel="stylesheet">
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -71,8 +71,8 @@
 
 
     <!-- Custom styles for this template -->
-    <link href="form-validation.css" rel="stylesheet">
-    <link href="cover.css" rel="stylesheet">
+    <link href="/static/css/form-validation.css" rel="stylesheet">
+    <link href="/static/css/cover.css" rel="stylesheet">
   </head>
   <body class="d-flex h-100 text-center text-white bg-dark">
 
@@ -80,9 +80,9 @@
   <header class="mb-auto">
     <div>
       <nav class="nav nav-masthead justify-content-center float-md-end">
-        <a class="nav-link fw-bold py-1 px-0" href="index.html">На главную</a>
+        <a class="nav-link fw-bold py-1 px-0" href="/">На главную</a>
         <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="#">Поиск</a>
-        <a class="nav-link fw-bold py-1 px-0" href="contacts.html">Контакты</a>
+        <a class="nav-link fw-bold py-1 px-0" href="/contacts/">Контакты</a>
       </nav>
     </div>
   </header>
@@ -90,33 +90,41 @@
   <main>
     <div class="py-5 text-center">
       <h2>Параметры поиска</h2>
-      <p class="lead">Введите параметры в текстовое поле, выберите поле для поиска и нажмите кнопку "Поиск"</p>
+      <p class="lead">Введите параметры поиска (например, название вакансии или компании) в текстовое поле и нажмите кнопку "Поиск".</p>
+      <p class="lead">Для сокращения времени работы количество вакансий будет ограничено параметром max_vacancies (число от 0 до 2000).
+       Параметр min_skills_freq (число от 0 до 1) позволяет вывести в результат только те навыки, которые встречаются не менее, чем в указанной доле вакансий. </p>
     </div>
 
     <div class="row g-5">
 
+      <div class="col-md-5 col-lg-4 order-md-last">
+
+        <form method = "post" class="card p-2">
+          <div class="input-group">
+            <small class="text-muted">max_vacancies = </small>
+            <input type="text" class="form-control" name="max_vacancies" value={{max_vacancies}}>
+          </div>
+          <div class="input-group">
+            <small class="text-muted">min_skills_freq = </small>
+            <input type="text" class="form-control" name="min_skills_freq" value={{min_skills_freq}}>
+          </div>
+          <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" name="save" type="submit">Сохранить</button>
+        </form>
+      </div>
+
       <div class="col-md-7 col-lg-8">
-        <form class="needs-validation" novalidate>
+        <form method="post" class="needs-validation" novalidate>
           <div class="row g-3">
 
             <div class="col-12">
-              <input type="text" class="form-control" id="query" placeholder="Строка поиска">
+              <input type="text" class="form-control" name="query" placeholder="Строка поиска" value={{query}}>
             </div>
-
-            <div class="col-12">
-              <select class="form-select" id="where" required>
-                <option value = "all"> Везде </option>
-                <option value = "company"> В названии компании </option>
-                <option value = "vacancy"> В названии вакансии </option>
-              </select>
-            </div>
-
 
           </div>
 
           <hr class="my-4">
 
-          <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" type="submit">Искать вакансии</button>
+          <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" name="run" type="submit">Получить данные</button>
         </form>
       </div>
     </div>
