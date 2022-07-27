@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
-from client import Parser
+from client_SQLALchemy import SQLAlchemyParser
+# from client import Parser
 
 MAX_VACANCIES = 100
 MIN_SKILLS_FREQ = 0.1
@@ -13,7 +14,7 @@ class Output:
 
 
 app = Flask(__name__)
-p = Parser(MAX_VACANCIES, MIN_SKILLS_FREQ)
+p = SQLAlchemyParser(MAX_VACANCIES, MIN_SKILLS_FREQ)
 output = Output()
 
 

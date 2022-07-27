@@ -1,6 +1,7 @@
 import requests
 import sqlite3
 from datetime import datetime
+from abc import ABC, abstractmethod
 import itertools
 from wordcloud import WordCloud
 import matplotlib
@@ -8,17 +9,18 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
-class Parser:
+# abstract ancestor to different parsers
+# we assume that its descendants will differ in methods of getting a data from the database
+class AbstractParser(ABC):
 
     def __init__(self, max_vacancies, min_skills_freq):
         self._vacancies = []
-        self._uptodate_vacancies = []   # this field contains the vacancies we download not so long ago, so the data on
+        self._uptodate_vacancies = []   # this field contains the vacancies we download, so the data on
         # them we load from the database, not the website
         self._skills = {}
         self._query = ''
         self._max_vacancies = max_vacancies
         self._min_skills_freq = min_skills_freq
-        self._conn = sqlite3.connect('data.sqlite', check_same_thread=False)
 
     def _set_max_vacancies(self, max_vacancies):
         self._max_vacancies = max_vacancies
@@ -93,6 +95,27 @@ class Parser:
     # set_uptodate_vacancies() method compares the list of vacancies to the database and finds those we consider
     # up-to-date (now it's all the vacancies presented in the database, but it's possible to narrow down
     # to vacancies downloaded after some date since we store the dates in the database)
+    @abstractmethod
+    def set_uptodate_vacancies(self):
+        pass
+
+    # update_vacancies() updates the data on all the vacancies in the database which are not up-to-date already
+    @abstractmethod
+    def update_vacancies(self):
+        pass
+
+    @abstractmethod
+    def update_skills(self):
+        pass
+
+
+# this parser uses straight queries to the database
+class Parser(AbstractParser):
+
+    def __init__(self, max_vacancies, min_skills_freq):
+        super().__init__(max_vacancies, min_skills_freq)
+        self._conn = sqlite3.connect('data.sqlite', check_same_thread=False)
+
     def set_uptodate_vacancies(self):
 
         cursor = self._conn.cursor()
@@ -102,7 +125,6 @@ class Parser:
 
         self._uptodate_vacancies = [str(vacancy) for vacancy in list(itertools.chain(*result))]
 
-    # update_vacancies() updates the data on all the vacancies in the database which are not up-to-date already
     def update_vacancies(self):
         vacancies_to_update = list(set(self._vacancies).difference(set(self._uptodate_vacancies)))
         cursor = self._conn.cursor()
@@ -121,7 +143,7 @@ class Parser:
 
                 skills_to_add = list(set(key_skills).difference(set(list(itertools.chain(*result)))))
                 for skill in skills_to_add:
-                    cursor.execute('INSERT INTO skills (name) VALUES ("' + skill + '");')
+                    cursor.execute('INSERT INTO skills (name) VALUES ("' + skill.replace('"', '') + '");')
 
                 # and now we add the correspondence of the skills to the vacancy
                 cursor.execute('SELECT id FROM skills WHERE name '+('IN ' + str(tuple(key_skills))
