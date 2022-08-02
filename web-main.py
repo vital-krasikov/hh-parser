@@ -1,3 +1,4 @@
+# controller module connecting our parser classes to the web-interface
 from flask import Flask, render_template, request
 from client_SQLALchemy import SQLAlchemyParser
 # from client import Parser
@@ -28,6 +29,8 @@ def form_get():
     return render_template("form.html", max_vacancies=p.max_vacancies, min_skills_freq=p.min_skills_freq)
 
 
+# by default our form uses GET method, if it's posted, it means that we pushed "Submit" button either for
+# getting vacancies from hh.ru or for saving new values for parameters
 @app.route('/form/', methods=['POST'])
 def form_post():
     if 'query' not in request.form:
@@ -52,8 +55,8 @@ def form_post():
         output.salary = p.get_vacancies(text)
         p.update_skills()
 
-        output.result_list = ['Проанализировано вакансий: {},'.format(output.salary['found']),
-                       'средняя зарплата от {:.2f} до {:.2f}'.format(output.salary['min'], output.salary['max'])]
+        output.result_list = ['Vacancies analyzed: {},'.format(output.salary['found']),
+                       'average salary from {:.2f} to {:.2f}'.format(output.salary['min'], output.salary['max'])]
 
         return render_template("results.html", result=output.result_list, img_url='/static/img/'+text.replace(' ', '_')+'.png')
 

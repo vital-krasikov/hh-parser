@@ -1,5 +1,6 @@
+# contains main classes for parsing the website
 import requests
-import sqlite3
+import sqlite3 # currently uses only SQLite for storing the data
 from datetime import datetime
 from abc import ABC, abstractmethod
 import itertools
@@ -14,13 +15,13 @@ import matplotlib.pyplot as plt
 class AbstractParser(ABC):
 
     def __init__(self, max_vacancies, min_skills_freq):
-        self._vacancies = []
-        self._uptodate_vacancies = []   # this field contains the vacancies we download, so the data on
+        self._vacancies = []  # list of all the vacancies parser get from hh.ru
+        self._uptodate_vacancies = []   # this field contains the vacancies we have already download, so the data on
         # them we load from the database, not the website
-        self._skills = {}
-        self._query = ''
-        self._max_vacancies = max_vacancies
-        self._min_skills_freq = min_skills_freq
+        self._skills = {}  # dictionary containing the skills with their frequencies
+        self._query = ''  # query which is used to get vacancies from hh.ru
+        self._max_vacancies = max_vacancies  # maximal number of vacancies to analyze
+        self._min_skills_freq = min_skills_freq  # minimal frequency of the skill to print
 
     def _set_max_vacancies(self, max_vacancies):
         self._max_vacancies = max_vacancies
@@ -104,12 +105,13 @@ class AbstractParser(ABC):
     def update_vacancies(self):
         pass
 
+    # update_skills() updates the data on used skills based on the skills we saved to the database
     @abstractmethod
     def update_skills(self):
         pass
 
 
-# this parser uses straight queries to the database
+# this parser uses straight queries to the database instead of ORM
 class Parser(AbstractParser):
 
     def __init__(self, max_vacancies, min_skills_freq):
