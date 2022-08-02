@@ -1,4 +1,4 @@
-from client import Parser
+from parsing import Parser
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 

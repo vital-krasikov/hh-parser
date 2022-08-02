@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.98.0">
-    <title>Поиск вакансий</title>
+    <title>Vacancies search</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/checkout/">
 
@@ -80,19 +80,19 @@
   <header class="mb-auto">
     <div>
       <nav class="nav nav-masthead justify-content-center float-md-end">
-        <a class="nav-link fw-bold py-1 px-0" href="/">На главную</a>
-        <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="#">Поиск</a>
-        <a class="nav-link fw-bold py-1 px-0" href="/contacts/">Контакты</a>
+        <a class="nav-link fw-bold py-1 px-0" href="/">Main page</a>
+        <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="#">Search</a>
+        <a class="nav-link fw-bold py-1 px-0" href="/contacts/">Contacts</a>
       </nav>
     </div>
   </header>
 
   <main>
     <div class="py-5 text-center">
-      <h2>Параметры поиска</h2>
-      <p class="lead">Введите параметры поиска (например, название вакансии или компании) в текстовое поле и нажмите кнопку "Поиск".</p>
-      <p class="lead">Для сокращения времени работы количество вакансий будет ограничено параметром max_vacancies (число от 0 до 2000).
-       Параметр min_skills_freq (число от 0 до 1) позволяет вывести в результат только те навыки, которые встречаются не менее, чем в указанной доле вакансий. </p>
+      <h2>Search parameters</h2>
+      <p class="lead">Enter the parameters (such as the vacancy or the company name) into the text field and press the Search button.</p>
+      <p class="lead">For the reduction of the execution time the number of vacancies will be bounded by the max_vacancies parameter (integer from 0 to 2000).
+       min_skills_freq parameter (float from 0 to 1) allows to output only the skills which are present more than in the given percent of vacancies. </p>
     </div>
 
     <div class="row g-5">
@@ -108,7 +108,7 @@
             <small class="text-muted">min_skills_freq = </small>
             <input type="text" class="form-control" name="min_skills_freq" value={{min_skills_freq}}>
           </div>
-          <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" name="save" type="submit">Сохранить</button>
+          <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" name="save" type="submit">Save</button>
         </form>
       </div>
 
@@ -117,14 +117,14 @@
           <div class="row g-3">
 
             <div class="col-12">
-              <input type="text" class="form-control" name="query" placeholder="Строка поиска" value={{query}}>
+              <input type="text" class="form-control" name="query" placeholder="Enter your query" value={{query}}>
             </div>
 
           </div>
 
           <hr class="my-4">
 
-          <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" name="run" type="submit">Получить данные</button>
+          <button class="btn btn-lg btn-secondary fw-bold border-white bg-white" name="run" type="submit">Search</button>
         </form>
       </div>
     </div>

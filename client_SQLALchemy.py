@@ -1,6 +1,8 @@
+# contains the parser for hh.ru which uses the SQLAlchemy ORM
+# and all service classes for the models we will use
 import requests
 from datetime import datetime
-from client import AbstractParser
+from parsing import AbstractParser
 from sqlalchemy import *
 from sqlalchemy.orm import create_session
 from sqlalchemy.ext.declarative import declarative_base
